@@ -24,13 +24,4 @@ public class Utils {
 
         return mapper.readTree(content);
     }
-
-    public static void main(String[] args) {
-        try {
-            System.out.println(Utils.loadString("{\"foo\":123}"));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
