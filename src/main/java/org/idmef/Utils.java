@@ -12,9 +12,12 @@ public class Utils {
     private static final String BASE = '/' + Utils.class.getPackage().getName().replace(".", "/");
 
     public static JsonNode loadResource(String path) throws IOException {
-        InputStream inputStream = Utils.class.getClassLoader().getResourceAsStream(BASE + '/' + path);
+        InputStream inputStream = Utils.class.getClassLoader().getResourceAsStream(path);
 
-        ObjectMapper mapper = new ObjectMapper();
+        if (inputStream == null)
+            throw new IOException("resource " + path + " not found");
+
+        ObjectMapper mapper = new ObjectMapper( );
 
         return mapper.readTree(inputStream);
     }
