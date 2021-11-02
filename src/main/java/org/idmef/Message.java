@@ -3,8 +3,6 @@ package org.idmef;
 import net.jimblackler.jsonschemafriend.*;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * IDMEF Message implementation.
@@ -15,36 +13,13 @@ import java.util.Map;
  * Current implementation does not check property keys in put method. Property keys and values are checked
  * when calling validate() method.
  */
-public class Message {
+public class Message extends BaseObject {
     private static final String SCHEMA_RESOURCE_PATH = "/IDMEFv2.schema";
-
-    private Map<String, Object> content;
 
     /**
      * Constructs an empty Message.
      */
     public Message() {
-        content = new HashMap<>();
-    }
-
-    /**
-     * Set a property of the Message.
-     *
-     * @param k the property key
-     * @param v the property value
-     */
-    public void put(String k, Object v) {
-        content.put(k, v);
-    }
-
-    /**
-     * Get a property of the Message
-     *
-     * @param k the property key
-     * @return the property value
-     */
-    public Object get(String k) {
-        return content.get(k);
     }
 
     /**
@@ -69,7 +44,7 @@ public class Message {
         Validator validator = new Validator();
 
         try {
-            validator.validate(schema, content);
+            validator.validate(schema, getContent());
         } catch (ValidationException e) {
             throw new IDMEFException("error validating:" + e.getMessage());
         }
