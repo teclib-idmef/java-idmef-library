@@ -1,5 +1,8 @@
 package org.idmef;
 
+import net.jimblackler.jsonschemafriend.*;
+
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,10 +49,26 @@ public class Message {
     /**
      * Validate the Message content w.r.t. current IDMEF JSON schema.
      *
-     * @throws ValidationException if the Message is not valid.
+     * @throws IDMEFException if the Message is not valid.
      */
-    public void validate() throws ValidationException {
-        throw new ValidationException();
+    public void validate() throws IDMEFException {
+        URL r = Message.class.getResource("/IDMEFv2.schema");
+        Schema schema;
+
+        SchemaStore schemaStore = new SchemaStore();
+        try {
+            schema = schemaStore.loadSchema(r);
+        } catch (GenerationException e) {
+            throw new IDMEFException("error loading schema:" + e.getMessage());
+        }
+
+        Validator validator = new Validator();
+
+        try {
+            validator.validate(schema, content);
+        } catch (ValidationException e) {
+            throw new IDMEFException("error validating:" + e.getMessage());
+        }
     }
 
     /**
@@ -58,9 +77,9 @@ public class Message {
      * <b>Note: The method first validates the Message.</b>
      *
      * @return the JSON bytes
-     * @throws ValidationException if the Message is not valid
+     * @throws IDMEFException if the Message is not valid
      */
-    public byte[] serialize() throws ValidationException {
+    public byte[] serialize() throws IDMEFException {
         validate();
 
         return null;
