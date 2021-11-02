@@ -16,6 +16,7 @@ import java.util.Map;
  * when calling validate() method.
  */
 public class Message {
+    private static final String SCHEMA_RESOURCE_PATH = "/IDMEFv2.schema";
 
     private Map<String, Object> content;
 
@@ -52,7 +53,10 @@ public class Message {
      * @throws IDMEFException if the Message is not valid.
      */
     public void validate() throws IDMEFException {
-        URL r = Message.class.getResource("/IDMEFv2.schema");
+        URL r = Message.class.getResource(SCHEMA_RESOURCE_PATH);
+        if (r == null)
+            throw new IDMEFException("Cannot locate schema resource");
+
         Schema schema;
 
         SchemaStore schemaStore = new SchemaStore();
