@@ -44,7 +44,7 @@ public class Message extends BaseObject {
         Validator validator = new Validator();
 
         try {
-            validator.validate(schema, getContent());
+            validator.validate(schema, this);
         } catch (ValidationException e) {
             throw new IDMEFException("error validating:" + e.getMessage());
         }

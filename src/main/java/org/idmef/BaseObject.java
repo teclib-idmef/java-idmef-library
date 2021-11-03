@@ -1,36 +1,31 @@
 package org.idmef;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-class BaseObject {
-    private Map<String, Object> content;
+class BaseObject extends HashMap<String, Object> {
 
     /**
      * Set a property of the Message.
-     *
      * @param key the property key
      * @param value the property value
+     * @return the value that was set
      */
-    public void put(String key, Object value) {
-        Object v = value;
-        if (value.getClass().isArray())
-            v = List.of(value);
+    public Object put(String key, Object value) {
+        Object adaptedValue = value;
+        if (value.getClass().isArray()) {
+            List<Object> l = new ArrayList<>();
 
-        content.put(key, v);
-    }
+            for(int i = 0; i < Array.getLength(value); i++)
+                l.add(Array.get(value, i));
 
-    /**
-     * Get a property of the Message
-     *
-     * @param k the property key
-     * @return the property value
-     */
-    public Object get(String k) {
-        return content.get(k);
-    }
+            adaptedValue = l;
+        }
 
-    Map<String, Object> getContent() {
-        return content;
+        super.put(key, adaptedValue);
+
+        return adaptedValue;
     }
 }
