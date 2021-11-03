@@ -1,19 +1,20 @@
 import org.idmef.Message;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestValidate {
+public class TestUnserialize {
 
     @Test
-    void testValidateMessage1() {
-        Message m = Util.message1();
+    void testUnserializeMessage1() {
+        String s = Util.string1();
 
         try {
-            m.validate();
+            Map<String, Object> m = Message.unserialize(s.getBytes());
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-
 }

@@ -3,17 +3,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestValidate {
+public class TestSerialize {
 
     @Test
-    void testValidateMessage1() {
+    void testSerializeMessage1() {
         Message m = Util.message1();
 
         try {
-            m.validate();
+            byte[] b = m.serialize();
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-
 }

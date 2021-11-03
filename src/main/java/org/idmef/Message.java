@@ -1,8 +1,12 @@
 package org.idmef;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jimblackler.jsonschemafriend.*;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * IDMEF Message implementation.
@@ -58,19 +62,23 @@ public class Message extends BaseObject {
      * @return the JSON bytes
      * @throws IDMEFException if the Message is not valid
      */
-    public byte[] serialize() throws IDMEFException {
+    public byte[] serialize() throws IDMEFException, IOException {
         validate();
 
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.writeValueAsBytes(this);
     }
 
     /**
      * Deserialize JSON bytes to a Message
      *
-     * @param b the JSON bytes
+     * @param json the JSON bytes
      * @return a Message object with content filled from JSON
      */
-    public static Message unserialize(byte[] b) {
-        return null;
+    public static Map<String, Object> unserialize(byte[] json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.readValue(json, new TypeReference<Map<String,Object>>(){});
     }
 }
