@@ -17,7 +17,7 @@ import java.util.Map;
  * Current implementation does not check property keys in put method. Property keys and values are checked
  * when calling validate() method.
  */
-public class Message extends BaseObject {
+public class Message extends IDMEFObject {
     private static final String SCHEMA_RESOURCE_PATH = "/IDMEFv2.schema";
 
     /**
@@ -79,6 +79,11 @@ public class Message extends BaseObject {
     public static Map<String, Object> unserialize(byte[] json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        return objectMapper.readValue(json, new TypeReference<Map<String,Object>>(){});
+        Map<String, Object> map = objectMapper.readValue(json, new TypeReference<Map<String,Object>>(){});
+
+        for (Map.Entry<String,Object> entry : map.entrySet()) {
+            System.out.println("Item: " + entry.getKey() + ", Price: " + entry.getValue());
+        }
+        return map;
     }
 }
