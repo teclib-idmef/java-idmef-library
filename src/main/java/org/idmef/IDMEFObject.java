@@ -1,11 +1,25 @@
 package org.idmef;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-class IDMEFObject extends HashMap<String, Object> {
+class IDMEFObject {
+
+    protected Map<String, Object> content;
+
+    IDMEFObject() {
+        content = new HashMap<>();
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        return content;
+    }
 
     /**
      * Set a property of the Message. If value is an array, transform it to a List.
@@ -26,7 +40,7 @@ class IDMEFObject extends HashMap<String, Object> {
             adaptedValue = l;
         }
 
-        super.put(key, adaptedValue);
+        content.put(key, adaptedValue);
 
         return adaptedValue;
     }

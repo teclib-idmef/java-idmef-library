@@ -48,7 +48,7 @@ public class Message extends IDMEFObject {
         Validator validator = new Validator();
 
         try {
-            validator.validate(schema, this);
+            validator.validate(schema, content);
         } catch (ValidationException e) {
             throw new IDMEFException("error validating:" + e.getMessage());
         }
