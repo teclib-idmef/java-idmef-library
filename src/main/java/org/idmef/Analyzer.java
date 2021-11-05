@@ -27,3 +27,14 @@ public class Analyzer extends IDMEFObject {
         super(map);
     }
 }
+
+class AnalyzerAdapter implements IDMEFObjectAdapter {
+
+    @Override
+    public IDMEFObject convert(Object o) throws IDMEFObjectAdaptException {
+        if (! (Map.class.isInstance(o)))
+            throw new IDMEFObjectAdaptException("adapter argument is not a Map");
+
+        return null;
+    }
+}
