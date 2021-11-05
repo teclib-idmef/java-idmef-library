@@ -27,6 +27,15 @@ public class Message extends IDMEFObject {
     }
 
     /**
+     * Construct a Message from a map.
+     *
+     * @param map the map
+     */
+    public Message(Map<String, Object> map) {
+        super(map);
+    }
+
+    /**
      * Validate the Message content w.r.t. current IDMEF JSON schema.
      *
      * @throws IDMEFException if the Message is not valid.
@@ -76,14 +85,11 @@ public class Message extends IDMEFObject {
      * @param json the JSON bytes
      * @return a Message object with content filled from JSON
      */
-    public static Map<String, Object> unserialize(byte[] json) throws IOException {
+    public static Message unserialize(byte[] json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String, Object> map = objectMapper.readValue(json, new TypeReference<Map<String,Object>>(){});
 
-        for (Map.Entry<String,Object> entry : map.entrySet()) {
-            System.out.println("Item: " + entry.getKey() + ", Price: " + entry.getValue());
-        }
-        return map;
+        return new Message(map);
     }
 }

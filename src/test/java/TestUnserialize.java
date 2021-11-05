@@ -1,8 +1,6 @@
 import org.idmef.Message;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestUnserialize {
@@ -12,7 +10,7 @@ public class TestUnserialize {
         String s = Util.string1();
 
         try {
-            Map<String, Object> m = Message.unserialize(s.getBytes());
+            Message m = Message.unserialize(s.getBytes());
         } catch (Exception e) {
             fail(e.getMessage());
         }

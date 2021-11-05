@@ -4,8 +4,25 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class IDMEFObject extends HashMap<String, Object> {
+
+    /**
+     * Construct an empty IDMEFObject.
+     *
+     */
+    IDMEFObject() {
+    }
+
+    /**
+     * Construct an IDMEFObject from a map.
+     *
+     * @param map the map
+     */
+    IDMEFObject(Map<String, Object> map) {
+        putAll(map);
+    }
 
     /**
      * Set a property of the Message. If value is an array, transform it to a List.
