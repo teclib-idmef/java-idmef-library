@@ -11,11 +11,8 @@ import java.util.Map;
 /**
  * IDMEF Message implementation.
  *
- * This implementation provides message property setting/getting, validation w.r.t. the IDMEF JSON schema
- * and serialization/deserialization to JSON.
+ * This implementation provides validation w.r.t. the IDMEF JSON schema and serialization/deserialization to JSON.
  *
- * Current implementation does not check property keys in put method. Property keys and values are checked
- * when calling validate() method.
  */
 public class Message extends IDMEFObject {
     private static final String SCHEMA_RESOURCE_PATH = "/IDMEFv2.schema";
@@ -24,6 +21,7 @@ public class Message extends IDMEFObject {
      * Constructs an empty Message.
      */
     public Message() {
+        super(null, "");
     }
 
     /**

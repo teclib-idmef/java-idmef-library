@@ -31,8 +31,12 @@ public class IDMEFObject {
     /**
      * Construct an empty IDMEFObject.
      */
-    IDMEFObject() {
+    public IDMEFObject(IDMEFObject parent, String propertyName)
+    {
         properties = new HashMap<>();
+
+        if (parent != null)
+            parent.put(propertyName, this);
     }
 
     /**
@@ -54,7 +58,7 @@ public class IDMEFObject {
      *
      * @param key the property key
      * @param value the property value
-     * @return the value that was set
+     * @return the real value that was set
      */
     public Object put(String key, Object value) {
         Object adaptedValue = value;
