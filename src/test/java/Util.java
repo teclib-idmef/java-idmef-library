@@ -1,13 +1,26 @@
 import org.idmef.Analyzer;
 import org.idmef.Message;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 public class Util {
+
+    static String now() {
+        return ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+    }
+
+    static String uuid() {
+        return UUID.randomUUID().toString();
+    }
 
     static Message message1() {
         Message msg = new Message();
         msg.put("Version", "2.0.3");
-        msg.put("ID", "afe884a3-d658-4a15-bd08-34abba526aca");
-        msg.put("CreateTime", "2021-10-28T11:32:19.359177");
+        msg.put("ID", uuid());
+        msg.put("CreateTime", now());
         Analyzer analyzer = new Analyzer();
         analyzer.put("IP", "127.0.0.1");
         analyzer.put("Name", "foobar");
@@ -23,8 +36,8 @@ public class Util {
     static String string1() {
         return "{\n" +
                 "\"Version\":\"2.0.3\",\n" +
-                "\"CreateTime\":\"2021-10-28T11:32:19.359177\",\n" +
-                "\"ID\":\"afe884a3-d658-4a15-bd08-34abba526aca\",\n" +
+                "\"CreateTime\":\"" + now() + "\",\n" +
+                "\"ID\":\"" + uuid() + "\",\n" +
                 "\"Analyzer\":{\n" +
                     "\"Category\":[\"LOG\"],\n" +
                     "\"IP\":\"127.0.0.1\",\n" +
