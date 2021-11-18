@@ -4,11 +4,6 @@ import java.util.Map;
 
 /**
  * IDMEF Analyzer object.
- *
- * This implementation provides property setting/getting.
- *
- * Current implementation does not check property keys in put method. Property keys and values are checked
- * when calling validate() method.
  */
 public class Analyzer extends IDMEFObject {
 
@@ -25,16 +20,5 @@ public class Analyzer extends IDMEFObject {
      */
     public Analyzer(Map<String, Object> map) {
         super(map);
-    }
-}
-
-class AnalyzerAdapter implements IDMEFObjectAdapter {
-
-    @Override
-    public IDMEFObject convert(Object o) throws IDMEFObjectAdaptException {
-        if (! (Map.class.isInstance(o)))
-            throw new IDMEFObjectAdaptException("adapter argument is not a Map");
-
-        return null;
     }
 }

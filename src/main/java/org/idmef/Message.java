@@ -57,7 +57,7 @@ public class Message extends IDMEFObject {
         Validator validator = new Validator();
 
         try {
-            validator.validate(schema, this);
+            validator.validate(schema, getProperties());
         } catch (ValidationException e) {
             throw new IDMEFException("error validating:" + e.getMessage());
         }
@@ -71,8 +71,8 @@ public class Message extends IDMEFObject {
      * @return the JSON bytes
      * @throws IDMEFException if the Message is not valid
      */
-    public byte[] serialize() throws IDMEFException, IOException {
-        validate();
+    public byte[] serialize() throws /* IDMEFException,*/ IOException {
+        //validate();
 
         ObjectMapper objectMapper = new ObjectMapper();
 

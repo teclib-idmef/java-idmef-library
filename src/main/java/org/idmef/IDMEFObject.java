@@ -1,27 +1,52 @@
 package org.idmef;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class IDMEFObject extends HashMap<String, Object> {
+/*
+    TODO:
+    - transform a JsonNode to a Map
+    - for embedded objects, lookup object class using property name (Analyzer -> org.idmef.Analyzer)
+    - for array of objects, use the array property name to lookup object class
+ */
+
+
+/**
+ * IDMEF base object.
+ *
+ * This implementation provides property setting/getting.
+ *
+ * Current implementation does not check property keys in put method. Property keys and values are checked
+ * when calling validate() method.
+ */
+public class IDMEFObject {
+
+    private Map<String, Object> properties;
 
     /**
      * Construct an empty IDMEFObject.
-     *
      */
     IDMEFObject() {
+        properties = new HashMap<>();
     }
 
     /**
-     * Construct an IDMEFObject from a map.
+     * Construct an IDMEFObject from a Map.
      *
-     * @param map the map
+     * @param map the Map
      */
     IDMEFObject(Map<String, Object> map) {
-        putAll(map);
+        this.properties = map;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 
     /**
@@ -43,7 +68,7 @@ class IDMEFObject extends HashMap<String, Object> {
             adaptedValue = l;
         }
 
-        super.put(key, adaptedValue);
+        properties.put(key, adaptedValue);
 
         return adaptedValue;
     }
