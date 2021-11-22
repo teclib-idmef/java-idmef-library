@@ -3,10 +3,7 @@ package org.idmef;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
     TODO:
@@ -26,14 +23,14 @@ import java.util.Map;
  */
 public class IDMEFObject {
 
-    private Map<String, Object> properties;
+    private LinkedHashMap<String, Object> properties;
 
     /**
      * Construct an empty IDMEFObject.
      */
     public IDMEFObject(IDMEFObject parent, String propertyName)
     {
-        properties = new HashMap<>();
+        properties = new LinkedHashMap<>();
 
         if (parent != null)
             parent.put(propertyName, this);
@@ -53,12 +50,18 @@ public class IDMEFObject {
      * @param map the Map
      */
     IDMEFObject(Map<String, Object> map) {
-        this.properties = map;
+        this();
+
+        properties.putAll(map);
     }
 
     @JsonAnyGetter
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    public Object get(String key) {
+        return properties.get(key);
     }
 
     /**

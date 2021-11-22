@@ -73,7 +73,7 @@ public class Util {
         sensor2.put("Name", "TheSensor2");
         sensor2.put("Model", "TheSensor2Model");
 
-        msg.put("Sensor", new Object[]{sensor1, sensor2});
+        msg.put("Sensor", new IDMEFObject[]{sensor1, sensor2});
 
         return msg;
     }

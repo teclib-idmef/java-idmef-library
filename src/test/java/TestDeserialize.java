@@ -20,11 +20,21 @@ public class TestDeserialize {
 
     @Test
     void testDeserializeMessage1() {
+        Message msg = deserialize(Util.string1());
+
+        System.err.println("Message: " + msg.getProperties().getClass().getName());
+        System.err.println("Analyzer: " + msg.get("Analyzer").getClass().getName());
+
         assertEquals(deserialize(Util.string1()), Util.message1());
     }
 
     @Test
     void testDeserializeMessage2() {
-        deserialize(Util.string2());
+        Message msg = deserialize(Util.string2());
+
+        System.err.println("Message: " + msg.getProperties().getClass().getName());
+        System.err.println("Sensor: " + msg.get("Sensor").getClass().getName());
+
+        assertEquals(msg, Util.message2());
     }
 }
