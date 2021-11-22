@@ -1,6 +1,5 @@
 package org.idmef;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import net.jimblackler.jsonschemafriend.*;
@@ -85,11 +84,9 @@ public class Message extends IDMEFObject {
      * @param json the JSON bytes
      * @return a Message object with content filled from JSON
      */
-    public static Message deserialize(byte[] json) throws IOException {
+    public static IDMEFObject deserialize(byte[] json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Map<String, Object> map = objectMapper.readValue(json, new TypeReference<Map<String,Object>>(){});
-
-        return new Message(map);
+        return objectMapper.readValue(json, IDMEFObject.class);
     }
 }

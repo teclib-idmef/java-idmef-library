@@ -1,6 +1,8 @@
 package org.idmef;
 
-public class IDMEFException extends Exception {
+import java.io.IOException;
+
+public class IDMEFException extends IOException {
     public IDMEFException(String message) {
         super(message);
     }

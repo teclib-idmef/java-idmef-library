@@ -1,6 +1,8 @@
 package org.idmef;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -21,6 +23,7 @@ import java.util.*;
  * Current implementation does not check property keys in put method. Property keys and values are checked
  * when calling validate() method.
  */
+@JsonDeserialize(using = IDMEFObjectDeserializer.class)
 public class IDMEFObject {
 
     private LinkedHashMap<String, Object> properties;
@@ -53,6 +56,31 @@ public class IDMEFObject {
         this();
 
         properties.putAll(map);
+    }
+
+    private static void putFields(IDMEFObject idmefObject, JsonNode node) throws IDMEFException {
+        Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> field = fields.next();
+            String key = field.getKey();
+            JsonNode value = field.getValue();
+
+            if (value.isInt())
+                idmefObject.put(key, value.asInt());
+            else if (value.isTextual())
+                idmefObject.put(key, value.textValue());
+            else if (value.isObject())
+                idmefObject.put(key, new IDMEFObject(value));
+            else
+                throw new IDMEFException("Unhandled node type: " + value.getClass().getName());
+        }
+    }
+
+    IDMEFObject(JsonNode node) throws IDMEFException {
+        this();
+
+        putFields(this, node);
     }
 
     @JsonAnyGetter
