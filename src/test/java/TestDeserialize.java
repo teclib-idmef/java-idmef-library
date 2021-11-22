@@ -1,6 +1,7 @@
 import org.idmef.Message;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestDeserialize {
@@ -19,7 +20,7 @@ public class TestDeserialize {
 
     @Test
     void testDeserializeMessage1() {
-        deserialize(Util.string1());
+        assertEquals(deserialize(Util.string1()), Util.message1());
     }
 
     @Test

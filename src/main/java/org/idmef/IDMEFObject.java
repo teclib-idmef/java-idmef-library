@@ -84,4 +84,9 @@ public class IDMEFObject {
 
         return adaptedValue;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return properties.equals(obj);
+    }
 }
