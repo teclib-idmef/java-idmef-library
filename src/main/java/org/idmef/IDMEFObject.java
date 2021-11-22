@@ -58,7 +58,25 @@ public class IDMEFObject {
         properties.putAll(map);
     }
 
-    private static void putFields(IDMEFObject idmefObject, JsonNode node) throws IDMEFException {
+    private static Object convertField(JsonNode value) throws IDMEFException {
+        if (value.isInt())
+            return value.asInt();
+        else if (value.isTextual())
+            return value.textValue();
+        else if (value.isObject())
+            return new IDMEFObject(value);
+        else if (value.isArray()) {
+            List<Object> l = new ArrayList<>();
+
+            for(int i = 0; i < value.size(); i++)
+                l.add(convertField(value.get(i)));
+
+            return l;
+        } else
+            throw new IDMEFException("Unhandled node type: " + value.getClass().getName());
+    }
+
+    private void putFields(JsonNode node) throws IDMEFException {
         Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
 
         while (fields.hasNext()) {
@@ -66,21 +84,14 @@ public class IDMEFObject {
             String key = field.getKey();
             JsonNode value = field.getValue();
 
-            if (value.isInt())
-                idmefObject.put(key, value.asInt());
-            else if (value.isTextual())
-                idmefObject.put(key, value.textValue());
-            else if (value.isObject())
-                idmefObject.put(key, new IDMEFObject(value));
-            else
-                throw new IDMEFException("Unhandled node type: " + value.getClass().getName());
+            put(key, convertField(value));
         }
     }
 
     IDMEFObject(JsonNode node) throws IDMEFException {
         this();
 
-        putFields(this, node);
+        putFields(node);
     }
 
     @JsonAnyGetter

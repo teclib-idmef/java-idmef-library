@@ -26,7 +26,7 @@ public class TestDeserialize {
         System.err.println("Message: " + msg.getProperties().getClass().getName());
         System.err.println("Analyzer: " + msg.get("Analyzer").getClass().getName());
 
-        assertEquals(deserialize(Util.string1()), Util.message1());
+        assertEquals(msg, Util.message1());
     }
 
     @Test
