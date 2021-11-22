@@ -40,6 +40,14 @@ public class IDMEFObject {
     }
 
     /**
+     * Construct an empty IDMEFObject.
+     */
+    public IDMEFObject()
+    {
+        this(null, "");
+    }
+
+    /**
      * Construct an IDMEFObject from a Map.
      *
      * @param map the Map

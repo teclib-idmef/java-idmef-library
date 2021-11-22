@@ -21,6 +21,7 @@ public class Util {
         msg.put("Version", "2.0.3");
         msg.put("ID", uuid());
         msg.put("CreateTime", now());
+
         IDMEFObject analyzer = new IDMEFObject(msg, "Analyzer");
         analyzer.put("IP", "127.0.0.1");
         analyzer.put("Name", "foobar");
@@ -38,20 +39,49 @@ public class Util {
                 "\"CreateTime\":\"" + now() + "\",\n" +
                 "\"ID\":\"" + uuid() + "\",\n" +
                 "\"Analyzer\":{\n" +
-                    "\"Category\":[\"LOG\"],\n" +
-                    "\"IP\":\"127.0.0.1\",\n" +
-                    "\"Model\":\"generic\",\n" +
-                    "\"Data\":[\"Log\"],\n" +
-                    "\"Method\":[\"Monitor\"],\n" +
-                    "\"Name\":\"foobar\"\n" +
-                    "}\n" +
+                "\"Category\":[\"LOG\"],\n" +
+                "\"IP\":\"127.0.0.1\",\n" +
+                "\"Model\":\"generic\",\n" +
+                "\"Data\":[\"Log\"],\n" +
+                "\"Method\":[\"Monitor\"],\n" +
+                "\"Name\":\"foobar\"\n" +
+                "}\n" +
                 "}\n";
+    }
+
+    static Message message2() {
+        Message msg = new Message();
+        msg.put("Version", "2.0.3");
+        msg.put("ID", uuid());
+        msg.put("CreateTime", now());
+
+        IDMEFObject analyzer = new IDMEFObject(msg, "Analyzer");
+        analyzer.put("IP", "127.0.0.1");
+        analyzer.put("Name", "foobar");
+        analyzer.put("Model", "generic");
+        analyzer.put("Category", new String[]{"LOG"});
+        analyzer.put("Data", new String[]{"Log"});
+        analyzer.put("Method", new String[]{"Monitor"});
+
+        IDMEFObject sensor1 = new IDMEFObject();
+        sensor1.put("IP", "192.168.1.1");
+        sensor1.put("Name", "TheSensor");
+        sensor1.put("Model", "TheSensorModel");
+
+        IDMEFObject sensor2 = new IDMEFObject();
+        sensor2.put("IP", "192.168.1.2");
+        sensor2.put("Name", "TheSensor2");
+        sensor2.put("Model", "TheSensor2Model");
+
+        msg.put("Sensor", new Object[]{sensor1, sensor2});
+
+        return msg;
     }
 
     static String string2() {
         return "{\"Version\": \"2.0.3\",\n" +
-                " \"ID\": \"e2f2cef4-25fb-4a24-a47a-cf88aa2b8cd8\",\n" +
-                " \"CreateTime\": \"2021-11-18T16:43:48.606197\",\n" +
+                "\"CreateTime\":\"" + now() + "\",\n" +
+                "\"ID\":\"" + uuid() + "\",\n" +
                 " \"Analyzer\": {\"IP\": \"127.0.0.1\",\n" +
                 "\t      \"Name\": \"foobar\",\n" +
                 "\t      \"Model\": \"generic\",\n" +
