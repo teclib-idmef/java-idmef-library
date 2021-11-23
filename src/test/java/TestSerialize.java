@@ -1,18 +1,31 @@
-import org.idmef.Message;
+import org.idmef.IDMEFObject;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileOutputStream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestSerialize {
 
-    @Test
-    void testSerializeMessage1() {
-        Message m = Util.message1();
-
+    private static void serialize(IDMEFObject msg, String outFileName) {
         try {
-            byte[] b = m.serialize();
+            byte[] b = msg.serialize();
+
+            FileOutputStream os = new FileOutputStream(outFileName);
+            os.write(b);
+            os.close();
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    void testSerializeMessage1() {
+        serialize(Util.message1(), "out1.json");
+    }
+
+    @Test
+    void testSerializeMessage2() {
+        serialize(Util.message2(), "out2.json");
     }
 }
