@@ -1,19 +1,24 @@
-import org.idmef.Message;
+import org.idmef.IDMEFObject;
+import org.idmef.IDMEFValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestValidate {
 
-    @Test
-    void testValidateMessage1() {
-        Message m = Util.message1();
+    private static void validate(IDMEFObject idmefObject) {
+        IDMEFValidator validator = new IDMEFValidator();
 
         try {
-            m.validate();
+            validator.validate(idmefObject);
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    void testValidateMessage1() {
+        validate(Util.message1());
     }
 
 }

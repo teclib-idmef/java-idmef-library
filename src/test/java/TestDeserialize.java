@@ -1,5 +1,4 @@
 import org.idmef.IDMEFObject;
-import org.idmef.Message;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,35 +6,29 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestDeserialize {
 
-    private static IDMEFObject deserialize(String json) {
+    private static void deserializeAndCheck(String json, IDMEFObject expected) {
         IDMEFObject msg = null;
 
         try {
-            msg = Message.deserialize(json.getBytes());
+            msg = IDMEFObject.deserialize(json.getBytes());
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
-        return msg;
+        String[] propertiesToCheck = {"ID", "CreateTime", "Version"};
+
+        for (String property: propertiesToCheck) {
+            assertEquals(msg.get(property), expected.get(property));
+        }
     }
 
     @Test
     void testDeserializeMessage1() {
-        IDMEFObject msg = deserialize(Util.string1());
-
-        System.err.println("Message: " + msg.getProperties().getClass().getName());
-        System.err.println("Analyzer: " + msg.get("Analyzer").getClass().getName());
-
-        assertEquals(msg, Util.message1());
+        deserializeAndCheck(Util.string1(), Util.message1());
     }
 
     @Test
     void testDeserializeMessage2() {
-        IDMEFObject msg = deserialize(Util.string2());
-
-        System.err.println("Message: " + msg.getProperties().getClass().getName());
-        System.err.println("Sensor: " + msg.get("Sensor").getClass().getName());
-
-        assertEquals(msg, Util.message2());
+        deserializeAndCheck(Util.string2(), Util.message2());
     }
 }

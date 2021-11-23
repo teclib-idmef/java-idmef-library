@@ -1,5 +1,4 @@
 import org.idmef.IDMEFObject;
-import org.idmef.Message;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -16,13 +15,13 @@ public class Util {
         return UUID.randomUUID().toString();
     }
 
-    static Message message1() {
-        Message msg = new Message();
+    static IDMEFObject message1() {
+        IDMEFObject msg = new IDMEFObject();
         msg.put("Version", "2.0.3");
-        msg.put("ID", uuid());
-        msg.put("CreateTime", now());
+        msg.put("ID", "09db946e-673e-49af-b4b2-a8cd9da58de6");
+        msg.put("CreateTime", "2021-11-22T14:42:51.881033Z");
 
-        IDMEFObject analyzer = new IDMEFObject(msg, "Analyzer");
+        IDMEFObject analyzer = new IDMEFObject();
         analyzer.put("IP", "127.0.0.1");
         analyzer.put("Name", "foobar");
         analyzer.put("Model", "generic");
@@ -36,8 +35,8 @@ public class Util {
     static String string1() {
         return "{\n" +
                 "\"Version\":\"2.0.3\",\n" +
-                "\"CreateTime\":\"" + now() + "\",\n" +
-                "\"ID\":\"" + uuid() + "\",\n" +
+                "\"CreateTime\":\"2021-11-22T14:42:51.881033Z\",\n" +
+                "\"ID\":\"09db946e-673e-49af-b4b2-a8cd9da58de6\",\n" +
                 "\"Analyzer\":{\n" +
                 "\"Category\":[\"LOG\"],\n" +
                 "\"IP\":\"127.0.0.1\",\n" +
@@ -49,19 +48,21 @@ public class Util {
                 "}\n";
     }
 
-    static Message message2() {
-        Message msg = new Message();
+    static IDMEFObject message2() {
+        IDMEFObject msg = new IDMEFObject();
         msg.put("Version", "2.0.3");
-        msg.put("ID", uuid());
-        msg.put("CreateTime", now());
+        msg.put("ID", "fae2ece1-ea54-461a-bedb-953495d6d39c");
+        msg.put("CreateTime", "2021-11-23T09:48:58.416374Z");
 
-        IDMEFObject analyzer = new IDMEFObject(msg, "Analyzer");
+        IDMEFObject analyzer = new IDMEFObject();
         analyzer.put("IP", "127.0.0.1");
         analyzer.put("Name", "foobar");
         analyzer.put("Model", "generic");
         analyzer.put("Category", new String[]{"LOG"});
         analyzer.put("Data", new String[]{"Log"});
         analyzer.put("Method", new String[]{"Monitor"});
+
+        msg.put("Analyzer", analyzer);
 
         IDMEFObject sensor1 = new IDMEFObject();
         sensor1.put("IP", "192.168.1.1");
@@ -80,8 +81,8 @@ public class Util {
 
     static String string2() {
         return "{\"Version\": \"2.0.3\",\n" +
-                "\"CreateTime\":\"" + now() + "\",\n" +
-                "\"ID\":\"" + uuid() + "\",\n" +
+                "\"CreateTime\":\"2021-11-23T09:48:58.416374Z\",\n" +
+                "\"ID\":\"fae2ece1-ea54-461a-bedb-953495d6d39c\",\n" +
                 " \"Analyzer\": {\"IP\": \"127.0.0.1\",\n" +
                 "\t      \"Name\": \"foobar\",\n" +
                 "\t      \"Model\": \"generic\",\n" +

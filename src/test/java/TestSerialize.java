@@ -1,4 +1,4 @@
-import org.idmef.Message;
+import org.idmef.IDMEFObject;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileOutputStream;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestSerialize {
 
-    private static void serialize(Message msg, String outFileName) {
+    private static void serialize(IDMEFObject msg, String outFileName) {
         try {
             byte[] b = msg.serialize();
 

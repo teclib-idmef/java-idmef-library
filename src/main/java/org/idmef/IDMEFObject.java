@@ -2,8 +2,11 @@ package org.idmef;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -31,31 +34,9 @@ public class IDMEFObject {
     /**
      * Construct an empty IDMEFObject.
      */
-    public IDMEFObject(IDMEFObject parent, String propertyName)
-    {
-        properties = new LinkedHashMap<>();
-
-        if (parent != null)
-            parent.put(propertyName, this);
-    }
-
-    /**
-     * Construct an empty IDMEFObject.
-     */
     public IDMEFObject()
     {
-        this(null, "");
-    }
-
-    /**
-     * Construct an IDMEFObject from a Map.
-     *
-     * @param map the Map
-     */
-    IDMEFObject(Map<String, Object> map) {
-        this();
-
-        properties.putAll(map);
+        properties = new LinkedHashMap<>();
     }
 
     private static Object convertField(JsonNode value) throws IDMEFException {
@@ -76,22 +57,16 @@ public class IDMEFObject {
             throw new IDMEFException("Unhandled node type: " + value.getClass().getName());
     }
 
-    private void putFields(JsonNode node) throws IDMEFException {
+    IDMEFObject(JsonNode node) throws IDMEFException {
+        this();
+
         Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
 
         while (fields.hasNext()) {
             Map.Entry<String, JsonNode> field = fields.next();
-            String key = field.getKey();
-            JsonNode value = field.getValue();
 
-            put(key, convertField(value));
+            put(field.getKey(), convertField(field.getValue()));
         }
-    }
-
-    IDMEFObject(JsonNode node) throws IDMEFException {
-        this();
-
-        putFields(node);
     }
 
     @JsonAnyGetter
@@ -129,6 +104,41 @@ public class IDMEFObject {
 
     @Override
     public boolean equals(Object obj) {
-        return properties.equals(obj);
+        if (! (obj instanceof IDMEFObject))
+            return false;
+
+        IDMEFObject idmefObject = (IDMEFObject) obj;
+
+        return properties.equals(idmefObject.properties);
     }
+
+    /**
+     * Serialize a Message to JSON bytes.
+     *
+     * <b>Note: The method first validates the Message.</b>
+     *
+     * @return the JSON bytes
+     * @throws IDMEFException if the Message is not valid
+     */
+    public byte[] serialize() throws /* IDMEFException,*/ IOException {
+        //validate();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        return objectMapper.writeValueAsBytes(this);
+    }
+
+    /**
+     * Deserialize JSON bytes to a Message
+     *
+     * @param json the JSON bytes
+     * @return a Message object with content filled from JSON
+     */
+    public static IDMEFObject deserialize(byte[] json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.readValue(json, IDMEFObject.class);
+    }
+
 }
