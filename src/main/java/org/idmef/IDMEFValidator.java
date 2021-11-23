@@ -1,43 +1,58 @@
 package org.idmef;
 
-import net.jimblackler.jsonschemafriend.*;
 
-import java.net.URL;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Set;
 
 public class IDMEFValidator {
     private static final String SCHEMA_RESOURCE_PATH = "/IDMEFv2.schema";
 
     /**
-     * Constructs an empty Message.
+     * Constructs a Validator.
      */
-    public IDMEFValidator() { }
-
-    /**
-     * Validate the Message content w.r.t. current IDMEF JSON schema.
-     *
-     * @throws IDMEFException if the Message is not valid.
-     */
-    public void validate(IDMEFObject idmefObject) throws IDMEFException {
-        URL r = IDMEFValidator.class.getResource(SCHEMA_RESOURCE_PATH);
-        if (r == null)
-            throw new IDMEFException("Cannot locate schema resource");
-
-        Schema schema;
-
-        SchemaStore schemaStore = new SchemaStore();
-        try {
-            schema = schemaStore.loadSchema(r);
-        } catch (GenerationException e) {
-            throw new IDMEFException("error loading schema:" + e.getMessage());
-        }
-
-        Validator validator = new Validator();
-
-        try {
-            validator.validate(schema, idmefObject);
-        } catch (ValidationException e) {
-            throw new IDMEFException("error validating:" + e.getMessage());
-        }
+    public IDMEFValidator() {
     }
 
+    private boolean validateJsonNode(JsonNode jsonNode) throws IDMEFException {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        InputStream is = IDMEFValidator.class.getResourceAsStream(SCHEMA_RESOURCE_PATH);
+        if (is == null)
+            throw new IDMEFException("cannot load schema");
+
+        JsonSchema schema = factory.getSchema(is);
+
+        Set<ValidationMessage> errors = schema.validate(jsonNode);
+
+        return errors.size() == 0;
+    }
+
+    /**
+     * Validate the object content w.r.t. current IDMEF JSON schema.
+     *
+     */
+    public boolean validate(IDMEFObject idmefObject) throws IDMEFException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.valueToTree(idmefObject);
+
+        return validateJsonNode(jsonNode);
+    }
+
+    /**
+     * Validate the bytes w.r.t. current IDMEF JSON schema.
+     *
+     */
+    public boolean validate(byte[] json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(json);
+
+        return validateJsonNode(jsonNode);
+    }
 }

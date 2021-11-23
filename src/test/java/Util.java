@@ -29,6 +29,8 @@ public class Util {
         analyzer.put("Data", new String[]{"Log"});
         analyzer.put("Method", new String[]{"Monitor"});
 
+        msg.put("Analyzer", analyzer);
+
         return msg;
     }
 
