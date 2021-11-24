@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
-group 'org.idmef'
-version '1.0-SNAPSHOT'
+group 'com.github.teclib-idmef'
+version '1.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
