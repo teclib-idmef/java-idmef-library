@@ -10,21 +10,18 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
-/*
-    TODO:
-    - transform a JsonNode to a Map
-    - for embedded objects, lookup object class using property name (Analyzer -> org.idmef.Analyzer)
-    - for array of objects, use the array property name to lookup object class
- */
-
-
 /**
  * IDMEF base object.
  *
- * This implementation provides property setting/getting.
+ * <p>This implementation provides:</p>
  *
- * Current implementation does not check property keys in put method. Property keys and values are checked
- * when calling validate() method.
+ * <ul>
+ *     <li>property getting</li>
+ *     <li>property setting: no check is done on property key, check is done by IDMEFValidator</li>
+ *     <li>serialization of a IDMEFObject instance to JSON bytes</li>
+ *     <li>deserialization if JSON bytes to a IDMEFObject instance</li>
+ * </ul>.
+ *
  */
 @JsonDeserialize(using = IDMEFObjectDeserializer.class)
 public class IDMEFObject {
@@ -69,17 +66,28 @@ public class IDMEFObject {
         }
     }
 
+    /**
+     * Get all properties of the object.
+     *
+     * @return a Map containing IDMEFObject properties
+     */
     @JsonAnyGetter
     public Map<String, Object> getProperties() {
         return properties;
     }
 
+    /**
+     * Get a property by its key.
+     *
+     * @param key the property key
+     * @return the value associated to the key or null
+     */
     public Object get(String key) {
         return properties.get(key);
     }
 
     /**
-     * Set a property of the Message. If value is an array, transform it to a List.
+     * Set a property of the Message. If value is an array, transform it to a List before setting the property
      *
      * @param key the property key
      * @param value the property value
@@ -102,6 +110,12 @@ public class IDMEFObject {
         return adaptedValue;
     }
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     *
+     * @param obj the reference object with which to compare.
+     * @return if this object is the same as the obj argument; false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (! (obj instanceof IDMEFObject))
@@ -115,14 +129,10 @@ public class IDMEFObject {
     /**
      * Serialize a Message to JSON bytes.
      *
-     * <b>Note: The method first validates the Message.</b>
-     *
      * @return the JSON bytes
-     * @throws IDMEFException if the Message is not valid
+     * @throws IDMEFException if an exception occured during serialization
      */
     public byte[] serialize() throws /* IDMEFException,*/ IOException {
-        //validate();
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -130,10 +140,10 @@ public class IDMEFObject {
     }
 
     /**
-     * Deserialize JSON bytes to a Message
+     * Deserialize JSON bytes to a IDMEFObject
      *
      * @param json the JSON bytes
-     * @return a Message object with content filled from JSON
+     * @return a IDMEFObject object with content filled from JSON
      */
     public static IDMEFObject deserialize(byte[] json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
