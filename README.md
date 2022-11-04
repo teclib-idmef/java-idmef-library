@@ -21,8 +21,13 @@ You can find more information about the previous version (v1) of the Intrusion D
 The following prerequisites must be installed on your system to install and use this library:
 
 * Java: version 11 or above
+
+The library has the following third-party dependencies:
+
 * Jackson (aka JSON for Java): https://github.com/FasterXML/jackson
 * Networknt Java JSON Schema Validator: https://github.com/networknt/json-schema-validator
+
+**Note**: building using gradle automaticaly pulls the needed dependencies.
 
 To compile the library:
 
@@ -31,8 +36,6 @@ To compile the library:
 ``` 
 
 This will build a JAR archive located in `./build/libs`.
-
-**Note**: building using gradle automaticaly pulls the needed dependencies.
 
 ## Using the library
 
