@@ -42,9 +42,7 @@ This will build a JAR archive located in `./build/libs`.
 
 ### Add the library to your project dependencies
 
-The library is published on https://jitpack.io
-
-Using the library is therefore very simple:
+The library is published on https://jitpack.io. Using the library is therefore very simple:
 
 **Step 1**. Add the JitPack repository to your build file
 
