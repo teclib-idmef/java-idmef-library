@@ -3,8 +3,11 @@ plugins {
     id 'maven-publish'
 }
 
-group 'com.github.teclib-idmef'
-version '1.0.2'
+group = 'com.github.teclib-idmef'
+version = '1.0.2'
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 
 repositories {
     mavenCentral()
@@ -29,33 +32,11 @@ test {
     useJUnitPlatform()
 }
 
-//task sourcesJar(type: Jar, dependsOn: classes) {
-//    classifier = 'sources'
-//    from sourceSets.main.allSource
-//}
-
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'teclib-idmef'
-            artifactId = 'java-idmef-library'
-            version = "1.0.2"
             from components.java
-
-            pom {
-                name = 'java-idmef-library'
-                description = 'A Java library for IDMEF V2 standards'
-            }
         }
     }
 }
+
