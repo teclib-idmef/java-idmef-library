@@ -1,4 +1,4 @@
-# Java IDMEF library
+# Java IDMEFv2 library
 
 ![GitHub top language](https://img.shields.io/github/languages/top/teclib-idmef/java-idmef-library) 
 ![GitHub](https://img.shields.io/github/license/teclib-idmef/java-idmef-library) 
