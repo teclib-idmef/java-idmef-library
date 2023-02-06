@@ -160,6 +160,7 @@ public class IDMEFObject {
      *
      * @param json the JSON bytes
      * @return a IDMEFObject object with content filled from JSON
+     * @throws IOException if an exception occured during deserialization
      */
     public static IDMEFObject deserialize(byte[] json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
